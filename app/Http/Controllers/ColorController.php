@@ -38,8 +38,11 @@ class ColorController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        return $request->user_name;
+
+        //return $request->file('image')->getClientOriginalName();
+        //return $request->file('image');
+        return $request->input('image');
+        return $request;
     }
 
     /**
