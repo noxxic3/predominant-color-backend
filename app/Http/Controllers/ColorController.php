@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Color;
+//use App\Models\Color;   // Can't repeat this name if I use  League\ColorExtractor\Color;
 use Illuminate\Http\Request;
+
+//ColorExtractor plugin
+use League\ColorExtractor\Color;
+use League\ColorExtractor\ColorExtractor;
+use League\ColorExtractor\Palette;
+
 
 class ColorController extends Controller
 {
@@ -38,11 +44,45 @@ class ColorController extends Controller
      */
     public function store(Request $request)
     {
+        /* Calculate the predominant color in the image (with the ColorExtractor library) */
+        $palette = Palette::fromFilename(  $request->file('image')  );       // $palette is an iterator on colors sorted by pixel count
+        // The most used colors are not what we visually perceive as the most used (the most “representative” colors).
+        //$topUsedColors = $palette->getMostUsedColors(3);
+        //return $topUsedColors;
+        /*
+        // If there is more than one color, the array is traversed with the integer color codes to assemble another array with the codes in hexadecimal
+        $c = [];
+        foreach($topUsedColors as $value) {
+            //$c[] = $value;
+            $c[] = Color::fromIntToHex($value);                            // Colors are represented by integers (I think this numeral system is proper to the library), they must be transformed to hexadecimal
+        }
+        return $c;
+        */
+
+        // An extractor is built from a palette
+        $extractor = new ColorExtractor($palette);
+
+        // An extractor defines an extract method which return the most “representative” colors
+        $topRepresentativeColors = $extractor->extract(3);
+        //return $topRepresentativeColors;
+        /*
+        // If there is more than one color, the array is traversed with the integer color codes to assemble another array with the codes in hexadecimal
+        $c = [];
+        foreach($topRepresentativeColors as $value) {
+            //$c[] = $value;
+            $c[] = Color::fromIntToHex($value);
+        }
+        return $c;
+        */
+        $topRepresentativeColor = Color::fromIntToHex( $topRepresentativeColors[0] );
+        //return gettype( $topRepresentativeColor );       // String
+        return $topRepresentativeColor;                   // <<<------
 
         //return $request->file('image')->getClientOriginalName();
         //return $request->file('image');
-        return $request->input('image');
-        return $request;
+        //return $request->input('image');
+        //return $request;
+
     }
 
     /**
