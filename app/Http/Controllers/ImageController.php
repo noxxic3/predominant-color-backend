@@ -127,9 +127,8 @@ class ImageController extends Controller
         //return min($colorPaletteDistances);
         // Takes the minimum value of the color palette distances and returns the key (color name) of the color that has this smallest distance to the compared color
         $closestColor = array_keys($colorPaletteDistances, min($colorPaletteDistances));
-
+        // Return color name and value (ImageController)
         return [ $closestColor[0] => $colorPalette[$closestColor[0]] ];
-
     }
 
     /**
