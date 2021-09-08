@@ -14,8 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::get('images', 'App\Http\Controllers\ColorController@index');
-Route::post('images', 'App\Http\Controllers\ColorController@store');
+Route::post('images', 'App\Http\Controllers\ImageController@store');
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

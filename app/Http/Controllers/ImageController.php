@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-//use App\Models\Color;   // Can't repeat this name if I use  League\ColorExtractor\Color;
 use Illuminate\Http\Request;
 
 //ColorExtractor plugin
@@ -10,8 +9,7 @@ use League\ColorExtractor\Color;
 use League\ColorExtractor\ColorExtractor;
 use League\ColorExtractor\Palette;
 
-
-class ColorController extends Controller
+class ImageController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -22,7 +20,6 @@ class ColorController extends Controller
     public function index()
     {
         //
-        return "Hola Controller Index AAA";
     }
     */
     /**
@@ -62,7 +59,7 @@ class ColorController extends Controller
         // An extractor is built from a palette
         $extractor = new ColorExtractor($palette);
 
-        // An extractor defines an extract method which return the most “representative” colors
+        // An extractor defines an extract method which return the most “representative” colors.
         $topRepresentativeColors = $extractor->extract(3);
         //return $topRepresentativeColors;
         /*
@@ -74,6 +71,7 @@ class ColorController extends Controller
         }
         return $c;
         */
+        // Colors are represented by integers, they must be transformed to hexadecimal
         $topRepresentativeColor = Color::fromIntToHex( $topRepresentativeColors[0] );
         //return gettype( $topRepresentativeColor );       // String
         //return $topRepresentativeColor;                   // <<<------
@@ -84,8 +82,6 @@ class ColorController extends Controller
         //return $request;
 
         /* Compare the color with the colors provided */
-
-        // https://www.w3schools.com/php/php_arrays_associative.asp
 
         $colorPalette = array(
             "Aqua"=>"#00FFFF",
@@ -123,7 +119,7 @@ class ColorController extends Controller
             // Get the diference of the RGB components of the compared colors
             $distance = abs($r - $palette_r) + abs($g - $palette_g) + abs($b - $palette_b);
 
-            // Mount new array with the distance of every palette color
+            // Mount new array with the diference (distance) of every palette color
             $colorPaletteDistances += [$key => $distance];
         }
 
